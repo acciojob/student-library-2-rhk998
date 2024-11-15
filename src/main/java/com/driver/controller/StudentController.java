@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 //Add required annotations
+@RequestMapping("student")
+@RestController
 public class StudentController {
 
     //Add required annotations
@@ -20,6 +22,7 @@ public class StudentController {
     }
 
     //Add required annotations
+    @PostMapping("/add")
     public ResponseEntity createStudent(@RequestBody Student student){
 
         return new ResponseEntity<>("the student is successfully added to the system", HttpStatus.CREATED);

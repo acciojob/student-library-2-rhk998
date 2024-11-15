@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import javax.transaction.Transactional;
 
 @Transactional
-public interface StudentRepository extends JpaRepository<Student, Integer> {
+public interface  StudentRepository extends JpaRepository<Student, Integer> {
 
     @Modifying
     @Query("update Student s set s.emailId = :#{#std.emailId}, " +
