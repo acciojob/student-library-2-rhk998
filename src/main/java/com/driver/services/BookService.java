@@ -34,6 +34,5 @@ public class BookService {
         } else {
             return bookRepository2.findByAvailability(available);
         }
-        return books;
     }
 }
