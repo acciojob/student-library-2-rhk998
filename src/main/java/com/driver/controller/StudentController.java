@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLOutput;
+
 //Add required annotations
 @RequestMapping("student")
 @RestController
@@ -26,7 +28,7 @@ public class StudentController {
     @GetMapping("/id")
     public ResponseEntity getStudentById(@RequestParam("id") int id){
         Student student = studentService.getDetailsById(id);
-        return new ResponseEntity<>("Student details printed successfully ", HttpStatus.OK);
+        return new ResponseEntity<>(student, HttpStatus.OK);
     }
 
     //Add required annotations
