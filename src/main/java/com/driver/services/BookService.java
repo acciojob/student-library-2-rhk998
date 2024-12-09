@@ -36,35 +36,22 @@ public class BookService {
         //bookRepository2.save(book);
     }
 
-    public List<Book> getBooks(String genre, boolean available, String author){
 
 
-
-        if (genre == null && author != null) {
-            return bookRepository2.findBooksByAuthor(author, available);
+        public List<Book> getBooks(String genre, boolean available, String author) {
+            // Filtering based on the inputs
+            if (genre != null && author != null) {
+                // Fetch books by genre, availability, and author
+                return bookRepository2.findBooksByGenreAuthor(genre, author, available);
+            } else if (genre != null) {
+                // Fetch books by genre and availability
+                return bookRepository2.findBooksByGenre(genre, available);
+            } else if (author != null) {
+                // Fetch books by author and availability
+                return bookRepository2.findBooksByAuthor(author, available);
+            } else {
+                // Fetch books based only on availability
+                return bookRepository2.findByAvailability(available);
+            }
         }
-
-        if (author == null && genre != null) {
-            return bookRepository2.findBooksByGenre(genre, available);
-        }
-
-        if (genre == null && author == null) {
-            return bookRepository2.findByAvailability(available);
-        }
-
-
-
-
-        if(genre!=null && author!=null){
-            return bookRepository2.findBooksByGenreAuthor(genre, author, available);
-        }
-        else if(genre!=null){
-            return bookRepository2.findBooksByGenre(genre,available);
-        }
-        else if(author!=null){
-            return bookRepository2.findBooksByAuthor(author,available);
-        }
-        else
-            return bookRepository2.findByAvailability(available);
-    }
 }
