@@ -12,33 +12,28 @@ import java.util.List;
 //Add required annotations
 @RestController
 @RequestMapping("/book")
-
 public class BookController {
 
-@Autowired
-BookService bookService;
+
+    @Autowired
+    BookService bookService;
 
     //Write createBook API with required annotations
-    @PostMapping
-    public ResponseEntity<String> addBook(@RequestBody Book book){
-            bookService.createBook(book);
-            return new ResponseEntity<>("SUCCESS",HttpStatus.ACCEPTED);
+    @PostMapping("/create")
+    public ResponseEntity<String> createBook(@RequestBody Book book){
+        bookService.createBook(book);
+        return new ResponseEntity<>("Success",HttpStatus.ACCEPTED);
     }
 
     //Add required annotations
-
     @GetMapping("/get_book")
-    public ResponseEntity<List<Book>> getBooks(
-            @RequestParam(value = "genre", required = false) String genre,
-            @RequestParam(value = "available", required = false, defaultValue = "false") boolean available,
-            @RequestParam(value = "author", required = false) String author) {
+    public ResponseEntity<List<Book>> getBooks(@RequestParam(value = "genre", required = false) String genre,
+                                               @RequestParam(value = "available", required = false, defaultValue = "false") boolean available,
+                                               @RequestParam(value = "author", required = false) String author){
 
-        List<Book> bookList = bookService.getBooks(genre, available, author);
+        List<Book> bookList = bookService.getBooks(genre,available,author); //find the elements of the list by yourself
 
-        if (bookList.isEmpty()) {
-            return new ResponseEntity<>(bookList, HttpStatus.NO_CONTENT); // 204 if no books found
-        }
         return new ResponseEntity<>(bookList, HttpStatus.OK);
-    }
 
+    }
 }

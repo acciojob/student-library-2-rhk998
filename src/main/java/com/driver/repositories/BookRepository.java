@@ -23,8 +23,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     @Query(value = "select * from book b where b.available =:availabilty", nativeQuery = true)
     List<Book> findByAvailability(boolean availabilty);
 
-    @Query("select b from Book b")
-    List<Book> findAllBooks();
 
     @Modifying
     @Transactional
