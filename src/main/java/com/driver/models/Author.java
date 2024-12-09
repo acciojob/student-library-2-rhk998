@@ -1,19 +1,12 @@
 package com.driver.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table
-@Getter
-@Setter
-@AllArgsConstructor
-
 public class Author {
 
     @Id
@@ -30,6 +23,54 @@ public class Author {
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     @JsonIgnoreProperties("author")
     private List<Book> booksWritten;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public List<Book> getBooksWritten() {
+        return booksWritten;
+    }
+
+    public void setBooksWritten(List<Book> booksWritten) {
+        this.booksWritten = booksWritten;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public Author() {
     }
