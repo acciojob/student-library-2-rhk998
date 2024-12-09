@@ -19,9 +19,7 @@ public class BookService {
     BookRepository bookRepository2;
 
 
-    public List<Book> getBooks(String genre, boolean available, String author){
-        List<Book> books = null; //find the elements of the list by yourself
-
+    public List<Book> getBooks(String genre, boolean available, String author) {
         if (genre != null && author != null) {
             return bookRepository2.findBooksByGenreAuthor(genre, author, available);
         } else if (genre != null) {
@@ -29,9 +27,10 @@ public class BookService {
         } else if (author != null) {
             return bookRepository2.findBooksByAuthor(author, available);
         } else {
-            return bookRepository2.findByAvailability(available);
+            return bookRepository2.findAllBooks(); // fallback query for all books
         }
     }
+
 
     public void createBook(Book book) {
         bookRepository2.save(book);

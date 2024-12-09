@@ -26,15 +26,19 @@ BookService bookService;
     }
 
     //Add required annotations
+
     @GetMapping("/get_book")
-    public ResponseEntity getBooks(@RequestParam(value = "genre", required = false) String genre,
-                                   @RequestParam(value = "available", required = false, defaultValue = "false") boolean available,
-                                   @RequestParam(value = "author", required = false) String author){
+    public ResponseEntity<List<Book>> getBooks(
+            @RequestParam(value = "genre", required = false) String genre,
+            @RequestParam(value = "available", required = false, defaultValue = "false") boolean available,
+            @RequestParam(value = "author", required = false) String author) {
 
-        List<Book> bookList = null; //find the elements of the list by yourself
-         bookList = bookService.getBooks(genre,available,author);
+        List<Book> bookList = bookService.getBooks(genre, available, author);
 
-            return new ResponseEntity<>(bookList, HttpStatus.OK);
-
+        if (bookList.isEmpty()) {
+            return new ResponseEntity<>(bookList, HttpStatus.NO_CONTENT); // 204 if no books found
+        }
+        return new ResponseEntity<>(bookList, HttpStatus.OK);
     }
+
 }
