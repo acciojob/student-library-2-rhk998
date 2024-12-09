@@ -39,8 +39,13 @@ public class StudentController {
     }
 
     //Add required annotations
-    @PostMapping("/updatestudent")
-    public ResponseEntity updateStudent(@RequestBody Student student){
+//    @PutMapping ("/updatestudent")
+//    public ResponseEntity updateStudent(@RequestBody Student student){
+//        studentService.updateStudent(student);
+//        return new ResponseEntity<>("student is updated", HttpStatus.ACCEPTED);
+//    }
+    @PutMapping("/update")
+    public ResponseEntity<String> updateStudent(@RequestBody Student student){
         studentService.updateStudent(student);
         return new ResponseEntity<>("student is updated", HttpStatus.ACCEPTED);
     }

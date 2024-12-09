@@ -18,9 +18,6 @@ public class BookService {
     @Autowired
     BookRepository bookRepository2;
 
-    public void createBook(Book book){
-        bookRepository2.save(book);
-    }
 
     public List<Book> getBooks(String genre, boolean available, String author){
         List<Book> books = null; //find the elements of the list by yourself
@@ -34,5 +31,9 @@ public class BookService {
         } else {
             return bookRepository2.findByAvailability(available);
         }
+    }
+
+    public void addBook(Book book) {
+        bookRepository2.save(book);
     }
 }

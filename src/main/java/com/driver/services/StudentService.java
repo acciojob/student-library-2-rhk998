@@ -29,40 +29,24 @@ public class StudentService {
     }
 
     public Student getDetailsById(int id){
-        Student student = studentRepository4.findById(id).orElse(new Student());
+        Student student = studentRepository4.findById(id).get();
         return student;
     }
 
     public void createStudent(Student student){
-        studentRepository4.save(student);
+
+        Card card = cardService4.createAndReturn(student);
+
     }
 
     public void updateStudent(Student student){
-        int id = student.getId();
-
-        Optional<Student> optionalRecord = studentRepository4.findById(id);
-        if(optionalRecord.isPresent()){
-            Student existingRecord = optionalRecord.get();
-            existingRecord.setEmailId(student.getEmailId());
-            existingRecord.setName(student.getName());
-            existingRecord.setAge(student.getAge());
-            existingRecord.setCountry(student.getCountry());
-            studentRepository4.save(existingRecord);
-        }
+        studentRepository4.updateStudentDetails(student);
 
     }
 
-    public void deleteStudent(int id){
-        //Delete student and deactivate corresponding card
-        Optional<Student> studentRec = studentRepository4.findById(id);
-        if(studentRec.isPresent()){
-            Student student = studentRec.get();
-            Card stdcard = student.getCard();
-            if(stdcard!=null){
-                stdcard.setCardStatus(CardStatus.DEACTIVATED);
-                cardRepository3.save(stdcard);
-            }
-        }
-
+    public void deleteStudent(int id) {
+        cardService4.deactivateCard(id);
+        studentRepository4.deleteCustom(id);
     }
+
 }
