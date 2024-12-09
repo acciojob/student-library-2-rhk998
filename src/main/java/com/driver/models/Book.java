@@ -95,5 +95,11 @@ public class Book {
 
     public Book() {
     }
+
+    public Book(String title, Genre genre, Author author) {
+        this.name = title;
+        this.genre = genre;
+        this.author = author;
+    }
 }
 

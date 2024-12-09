@@ -88,5 +88,12 @@ public class Card {
     public Card(){
         this.cardStatus = CardStatus.ACTIVATED;
     }
+
+    public Card(Student student, Date createdOn, Date updatedOn) {
+        this.student = student;
+        this.createdOn = createdOn;
+        this.updatedOn = updatedOn;
+        this.cardStatus = CardStatus.ACTIVATED;
+    }
 }
 
