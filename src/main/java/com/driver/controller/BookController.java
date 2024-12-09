@@ -26,20 +26,14 @@ public class BookController {
     }
 
     //Add required annotations
-    @GetMapping
-    public ResponseEntity<?> getBooks(
-            @RequestParam(value = "genre", required = false) String genre,
-            @RequestParam(value = "available", required = false, defaultValue = "false") boolean available,
-            @RequestParam(value = "author", required = false) String author) {
+    @GetMapping("/get_book")
+    public ResponseEntity<List<Book>> getBooks(@RequestParam(value = "genre", required = false) String genre,
+                                               @RequestParam(value = "available", required = false, defaultValue = "false") boolean available,
+                                               @RequestParam(value = "author", required = false) String author){
 
-        // Fetch books based on the provided parameters
-        List<Book> bookList = bookService.getBooks(genre, available, author);
-
-        // Check if the list is empty and return the appropriate response
-        if (bookList.isEmpty()) {
-            return new ResponseEntity<>("No books found matching the criteria.", HttpStatus.NO_CONTENT);
-        }
+        List<Book> bookList = bookService.getBooks(genre,available,author); //find the elements of the list by yourself
 
         return new ResponseEntity<>(bookList, HttpStatus.OK);
+
     }
 }
