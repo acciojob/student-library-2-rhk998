@@ -33,7 +33,7 @@ public class BookService {
         }
     }
 
-    public void addBook(Book book) {
+    public void createBook(Book book) {
         bookRepository2.save(book);
     }
 }
