@@ -32,12 +32,9 @@ BookService bookService;
                                    @RequestParam(value = "author", required = false) String author){
 
         List<Book> bookList = null; //find the elements of the list by yourself
+         bookList = bookService.getBooks(genre,available,author);
 
-        try{
             return new ResponseEntity<>(bookList, HttpStatus.OK);
 
-        }catch(Exception e){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 }
