@@ -24,8 +24,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
     List<Book> findByAvailability(boolean availabilty);
 
 
-
-
     @Modifying
     @Transactional
     @Query("update Book b set b.available =:#{#book.available}, b.card =:#{#book.card} where b.id =:#{#book.id}")
