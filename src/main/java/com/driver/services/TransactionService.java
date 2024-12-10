@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static com.driver.models.CardStatus.DEACTIVATED;
 
@@ -70,35 +71,50 @@ public class TransactionService {
 
     public Transaction returnBook(int cardId, int bookId) throws Exception{
 
-        List<Transaction> transactions = transactionRepository5.find(cardId, bookId,TransactionStatus.SUCCESSFUL, true);
-        Transaction transaction = transactions.get(transactions.size()-1);
-
-        Date d1=transaction.getTransactionDate();
-        Date d2=new Date();
-        long diff=d2.getTime()- d1.getTime();
-        int dif=(int) diff;
-        if(dif>15){
-            fine_per_day=(fine_per_day)*(dif-15);
-        }
-        Book book=bookRepository5.findById(bookId).get();
-        book.setAvailable(true);
-
         //for the given transaction calculate the fine amount considering the book has been returned exactly when this function is called
         //make the book available for other users
         //make a new transaction for return book which contains the fine amount as well
 
 
+        List<Transaction> transactions = transactionRepository5.find(cardId, bookId, TransactionStatus.SUCCESSFUL, true);
+        Transaction transaction=transactions.get(transactions.size()-1);
+        int fine=0;
 
-        Transaction returnBookTransaction  = new Transaction();
+        Date transactionDate=transaction.getTransactionDate();
 
-        returnBookTransaction.setId(transaction.getId());
-        returnBookTransaction.setTransactionId(transaction.getTransactionId());
-        returnBookTransaction.setCard(transaction.getCard());
-        returnBookTransaction.setBook(transaction.getBook());
-        returnBookTransaction.setIssueOperation(transaction.isIssueOperation());//check later
-        returnBookTransaction.setTransactionStatus(transaction.getTransactionStatus());
-        returnBookTransaction.setTransactionDate(transaction.getTransactionDate());
+        long issueTime=Math.abs(System.currentTimeMillis()-transactionDate.getTime());
+        long no_of_days= TimeUnit.DAYS.convert(issueTime,TimeUnit.MILLISECONDS);
 
-        return returnBookTransaction;
+        if(no_of_days>getMax_allowed_days){
+            fine=(int)(no_of_days-getMax_allowed_days)*fine_per_day;
+        }
+
+        Book book=transaction.getBook();
+        book.setCard(null);
+        book.setAvailable(true);
+
+        Card card1=cardRepository5.findById(cardId).get();
+        List<Book> bookList=card1.getBooks();
+
+        bookList.remove(book);
+
+        cardRepository5.save(card1);
+
+        bookRepository5.updateBook(book);
+
+
+        //   bookRepository5.updateBook(book);
+
+        Transaction tr=new Transaction();
+        tr.setBook(transaction.getBook());
+        tr.setCard(transaction.getCard());
+        tr.setIssueOperation(false);
+        tr.setFineAmount(fine);
+        tr.setTransactionStatus(TransactionStatus.SUCCESSFUL);
+        transactionRepository5.save(tr);
+
+
+        return tr;
+
     }
 }
